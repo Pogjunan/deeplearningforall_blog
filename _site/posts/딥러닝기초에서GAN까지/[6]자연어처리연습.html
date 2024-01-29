@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.533">
+<meta name="generator" content="quarto-1.4.548">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="전준한">
-<meta name="dcterms.date" content="2023-12-26">
+<meta name="dcterms.date" content="2023-12-23">
 
-<title>deeplearningforall_blog - [8]GAN</title>
+<title>deeplearningforall_blog - [6]자연어처리연습</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,22 +59,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +104,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">deeplearningforall_blog</span>
     </a>
   </div>
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">[8]GAN</h1>
+      <h1 class="title">[6]자연어처리연습</h1>
                       </div>
   </div>
     
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 26, 2023</p>
+        <p class="date">December 23, 2023</p>
       </div>
     </div>
     
@@ -185,106 +185,157 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="gan" class="level1">
-<h1><code>[8] GAN</code></h1>
-<p><code>-</code> CNN 과 RNN 후에 많은 연습할 알고리즘이 있지만 이 책에서는 CRNN 만 다루고 있고 이미 다뤄본 알고리즘이라 바로 GAN 만 다루고 끝내겠습니다. <br> <code>-</code> 무엇보다 가볍게 다루기 때문에 가볍게 보고 지나치겠습니다.</p>
-<section id="gan-오토인코더" class="level2">
-<h2 class="anchored" data-anchor-id="gan-오토인코더"><code>GAN 오토인코더</code></h2>
-<ul>
-<li>현재 사진을 합성하는 기술로 존재하지 않는 사람을 그럴 듯 하게 만들 수 있는 기술</li>
-<li>GAN = 생성적 적대 신경망 <code>( Generative Adversarial Networks)</code></li>
-<li>매번 듣는 것 : 경찰과 도둑</li>
-</ul>
-</section>
-</section>
-<section id="mnist-의-예시-gan" class="level1">
-<h1><code>MNIST 의 예시 GAN</code></h1>
-</section>
-<section id="생성자-생성함수" class="level1">
-<h1>[1] <code>생성자 생성함수</code></h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>generator <span class="op">=</span> Sequential()</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>generator.add(Dense(<span class="dv">128</span><span class="op">*</span><span class="dv">7</span><span class="op">*</span><span class="dv">7</span> , input_dim<span class="op">=</span><span class="dv">100</span> , activation<span class="op">=</span>LeakyReLU(<span class="fl">0.2</span>)))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>generator.add(BatchNormalization())</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>generator.add(Reshape((<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">128</span>)))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>generator.add(UpSampling2D()) <span class="co"># ...(1)</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>generator.add(Conv2D(<span class="dv">64</span>,kernel_size<span class="op">=</span><span class="dv">5</span>,padding<span class="op">=</span><span class="st">'same'</span>))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>generator.add(BatchNormalization())</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>generator.add(Activation(LeakyReLU(<span class="fl">0.2</span>)))</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>generator.add(UpSampling2D()) <span class="co"># ...(2)</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>generator.add(Conv2D(<span class="dv">1</span>, kernel_size<span class="op">=</span><span class="dv">5</span>,padding<span class="op">=</span><span class="st">'same'</span>,activation<span class="op">=</span><span class="st">'tanh'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<blockquote class="blockquote">
-
-</blockquote>
+<section id="자연어-처리-연습" class="level1">
+<h1>자연어 처리 연습</h1>
+<section id="순서" class="level3">
+<h3 class="anchored" data-anchor-id="순서">[순서]</h3>
 <ol type="1">
-<li></li>
+<li>토큰화 <br></li>
+<li>원핫인코딩(보통 많이사용) <br></li>
+<li>단어임베딩 # 중요</li>
+<li>각자 필요한 EDA 시작</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>generator.add(Dense(<span class="dv">128</span><span class="op">*</span><span class="dv">7</span><span class="op">*</span><span class="dv">7</span> , input_dim<span class="op">=</span><span class="dv">100</span> , activation<span class="op">=</span>LeakyReLU(<span class="fl">0.2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>128 은 임의의 노드 숫자 : 굳이 128 이 아니여도 됩니다. <br> input_dim = 100 도 적절한 숫자 넣으면됩니다.</p>
-<p><strong><code>7*7</code></strong> : 이미지의 최소 크기를 의미 , MNIST 의 이미지는 <code>28*28</code> 인데 왜 최소크기 <code>7*7</code> 일까요 ? -&gt; 그 이유는 위의 (1) 과 (2) 의 UpSampling 때문입니다. UpSampling 은 이미지를 가로,세로로 2배씩 늘려줍니다. 그래서 <code>7*7</code> =&gt; <code>14*14</code> =&gt; <code>28*28</code> 이 됩니다.</p>
-<section id="계속된-upsampling-사이에-cnn-을-적용시키는-작업을-하는-것이-dcgan-의-특징입니다." class="level3">
-<h3 class="anchored" data-anchor-id="계속된-upsampling-사이에-cnn-을-적용시키는-작업을-하는-것이-dcgan-의-특징입니다."><code>계속된 UpSampling</code> 사이에 <code>CNN</code> 을 적용시키는 작업을 하는 것이 <code>DCGAN</code> 의 특징입니다.</h3>
-<ol start="2" type="1">
-<li></li>
+</section>
+<section id="가벼운-영화-리뷰-긍정부정적-예측" class="level3">
+<h3 class="anchored" data-anchor-id="가벼운-영화-리뷰-긍정부정적-예측">가벼운 영화 리뷰 긍정,부정적 예측</h3>
+<ol type="1">
+<li>Import</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>generator.add(Reshape((<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">128</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="aaad4289-61a8-4dd9-a016-a17c66162fd4" class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> array</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.preprocessing.text <span class="im">import</span> Tokenizer</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.preprocessing.sequence <span class="im">import</span> pad_sequences</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.models <span class="im">import</span> Sequential</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> Dense,Flatten,Embedding</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="5a27089b-54f4-4cc2-8a1a-47f0784933ee" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> [<span class="st">'너무 재밌네요'</span>,<span class="st">'최고예요'</span>,<span class="st">'참 잘 만든 영화예요'</span>,<span class="st">'추천하고 싶은 영화입니다.'</span>,<span class="st">'한번 더 보고싶네요'</span>,<span class="st">' 글쎄요'</span>, <span class="op">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">'별로예요'</span>,<span class="st">'생각보다 지루하네요'</span>,<span class="st">'연기가 어색해요.'</span>,<span class="st">'재미없어요'</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 긍정=1, 부정=0</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> array([<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#토큰화</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>token<span class="op">=</span>Tokenizer()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>token.fit_on_texts(docs)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(token.word_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'너무': 1, '재밌네요': 2, '최고예요': 3, '참': 4, '잘': 5, '만든': 6, '영화예요': 7, '추천하고': 8, '싶은': 9, '영화입니다': 10, '한번': 11, '더': 12, '보고싶네요': 13, '글쎄요': 14, '별로예요': 15, '생각보다': 16, '지루하네요': 17, '연기가': 18, '어색해요': 19, '재미없어요': 20}</code></pre>
+</div>
+</div>
+<div id="33ac822c-bda9-4d76-9ab0-88ffc75e405c" class="cell" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#패딩 , 서로 다른 길이를 4로 맞추기</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> token.texts_to_sequences(docs) <span class="co">#keras 제공의 토큰만으로 채워진 인덱스 배열</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>padded_x <span class="op">=</span> pad_sequences(x,<span class="dv">4</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(padded_x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1, 2], [3], [4, 5, 6, 7], [8, 9, 10], [11, 12, 13], [14], [15], [16, 17], [18, 19], [20]]
+[[ 0  0  1  2]
+ [ 0  0  0  3]
+ [ 4  5  6  7]
+ [ 0  8  9 10]
+ [ 0 11 12 13]
+ [ 0  0  0 14]
+ [ 0  0  0 15]
+ [ 0  0 16 17]
+ [ 0  0 18 19]
+ [ 0  0  0 20]]</code></pre>
+</div>
+</div>
+<div id="97dd65bf-a235-4dda-97b4-6a9f425d4560" class="cell" data-tags="[]" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>[[1, 2],
+ [3],
+ [4, 5, 6, 7],
+ [8, 9, 10],
+ [11, 12, 13],
+ [14],
+ [15],
+ [16, 17],
+ [18, 19],
+ [20]]</code></pre>
+</div>
+</div>
+<div id="30fa08cb-8350-4fe0-a03b-8289efdee4cc" class="cell" data-tags="[]" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 임베딩 입력 단어 수 지정</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>word_size <span class="op">=</span> <span class="bu">len</span>(token.word_index)<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> keras.utils <span class="im">import</span> to_categorical</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#x = to_categorical(x,num_classes=word_size)</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#print(x) =&gt; 맨 앞에 0 추가되어 단어 수 보다 1 이 더 많게 인덱스 숫자 잡아줌.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="92f1d328-d328-4508-af20-9da33cba4ab2" class="cell" data-tags="[]" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#단어 임베딩 포함한 딥러닝 모델 만들기 - tensorflow</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Sequential()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model.add(Embedding(word_size,<span class="dv">8</span>,input_length<span class="op">=</span><span class="dv">4</span>)) <span class="co">#단어임베딩</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model.add(Flatten())</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>model.add(Dense(<span class="dv">1</span>,activation<span class="op">=</span><span class="st">'sigmoid'</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">'adam'</span>, loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>              metrics<span class="op">=</span>[<span class="st">'accuracy'</span>])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>model.fit(padded_x,classes,epochs<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> Accuracy: </span><span class="sc">%.4f</span><span class="st">"</span> <span class="op">%</span> (model.evaluate(padded_x,classes)[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch 1/20
+1/1 [==============================] - 0s 325ms/step - loss: 0.6873 - accuracy: 0.7000
+Epoch 2/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6852 - accuracy: 0.7000
+Epoch 3/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6830 - accuracy: 0.7000
+Epoch 4/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6808 - accuracy: 0.8000
+Epoch 5/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6786 - accuracy: 0.8000
+Epoch 6/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6765 - accuracy: 0.8000
+Epoch 7/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6743 - accuracy: 0.8000
+Epoch 8/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6721 - accuracy: 0.8000
+Epoch 9/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6699 - accuracy: 0.9000
+Epoch 10/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6677 - accuracy: 0.9000
+Epoch 11/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6655 - accuracy: 1.0000
+Epoch 12/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6633 - accuracy: 1.0000
+Epoch 13/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6611 - accuracy: 1.0000
+Epoch 14/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6589 - accuracy: 1.0000
+Epoch 15/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6567 - accuracy: 1.0000
+Epoch 16/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6545 - accuracy: 1.0000
+Epoch 17/20
+1/1 [==============================] - 0s 2ms/step - loss: 0.6522 - accuracy: 1.0000
+Epoch 18/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6499 - accuracy: 1.0000
+Epoch 19/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6477 - accuracy: 1.0000
+Epoch 20/20
+1/1 [==============================] - 0s 3ms/step - loss: 0.6454 - accuracy: 1.0000
+1/1 [==============================] - 0s 80ms/step - loss: 0.6431 - accuracy: 1.0000
+
+ Accuracy: 1.0000</code></pre>
+</div>
+</div>
+<p>[해석] - 단어 임베딩 : 16차원의 벡터를 4차원의 벡터로 바꾼 것. - 단어간의 유사도를 통해 밀집된 정보로 공간 정보를 줄임. - 오차역전파를 이용하여 최적의 유사도 계산과정 거침. - keras 의 Embedding 함수 이용 (입력과 출력 크기를 결정) - 패딩 : 길이를 똑같이 맞춰주는 작업 - [3] 과 [4,5,6,7] 은 길이가 달라서 학습이 안되어 맞추어주어야한다. - keras 의 pad_sequence() 함수로 원하는 길이보다 짧은 부분은 숫자 0 을 채우고 길면 잘라서 길이 맞춥니다.</p>
 <ul>
-<li>Convoultion layer 가 받아들일 수 있도록 형태를 정해줍니다.</li>
-</ul>
-<p><br></p>
-</section>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section">3.</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>generator.add(UpSampling2D()) <span class="co"># ...(1)</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>generator.add(Conv2D(<span class="dv">64</span>,kernel_size<span class="op">=</span><span class="dv">5</span>,padding<span class="op">=</span><span class="st">'same'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><br> 5x5 커널을 사용하였고 padding 을 자동으로 조절하여 크기에 변화가 없도록 처리하였습니다.</p>
-<p>이 후 3x3 커널도 같은 작업으로 크기를 조절하였습니다.</p>
-<ol start="4" type="1">
-<li></li>
-</ol>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>generator.add(Dense(<span class="dv">128</span><span class="op">*</span><span class="dv">7</span><span class="op">*</span><span class="dv">7</span> , input_dim<span class="op">=</span><span class="dv">100</span> , activation<span class="op">=</span>LeakyReLU(<span class="fl">0.2</span>))) </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>generator.add(Activation(LeakyReLU(<span class="fl">0.2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<li>word_size = len(token.word_index) +1
 <ul>
-<li>LeakyReLU 의 형태를 보면 <img src="data:image/jpeg;base64,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" class="img-fluid" alt="이미지가깨졌습니다."></li>
-</ul>
-<p>로 x 값이 음수일 때 무조건 0 이 되어 뉴런이 일찍 소실되는 단점을 보완하였습니다. 0.2 는 0보다 작을경우 0.2 를 곱하라는 의미입니다.</p>
-</section>
-</section>
-<section id="판별자-진위를-가려내는-장치" class="level1">
-<h1>[2] <code>판별자 ,진위를 가려내는 장치</code></h1>
-<ul>
-<li>CNN (컨볼루젼 신경망) 은 구별에 최적화된 알고리즘입니다. 목적 그대로 사용합니다. 진짜 = 1 ,가짜 = 0</li>
-<li>이전 장에서 배운 compile 내부의 binary_crossentropy ,adam , Dropout(0.3) ,batch_normalization , padding 등 모두 넣습니다. <br></li>
-</ul>
-<section id="판별자-의-진심-진짜인지-가짜인지-판별만해줄-뿐-자신이-학습을-하면-안된다" class="level3">
-<h3 class="anchored" data-anchor-id="판별자-의-진심-진짜인지-가짜인지-판별만해줄-뿐-자신이-학습을-하면-안된다"><code>-</code> [2] <strong><code>판별자</code></strong> 의 진심 : 진짜인지 가짜인지 판별만해줄 뿐 자신이 학습을 하면 안된다!</h3>
-<p><br></p>
-<ul>
-<li><code>판별자</code>가 얻은 가중치는 다시 생성자에게 넘겨주어 <code>생성자</code>가 <code>업데이트된 이미지 만들도록 해야함.</code>
-<ul>
-<li>따라서 <code>판별자</code>를 만들 때 <code>가중치를 저장</code>하는 <code>학습기능 끄기</code></li>
+<li>word_size 는 인덱스가 몇 개 입력되어야하는지를 정합니다.</li>
+<li>1번째 단어 -&gt; 0 번 , 2번째 단어 -&gt; 1번 … 따라서 +1 로 길이를 (n-1)+1 = n 으로 맞출 수 있습니다.</li>
 </ul></li>
 </ul>
+
+
 </section>
-</section>
-<section id="판별자의-코드" class="level1">
-<h1><code>판별자</code>의 코드</h1>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>discriminator <span class="op">=</span> Sequential()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>discriminator.add(Conv2D(<span class="dv">64</span>,kernel_size<span class="op">=</span><span class="dv">5</span>,strides<span class="op">=</span><span class="dv">2</span>,input_shape<span class="op">=</span>(<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>),padding<span class="op">=</span><span class="st">'same'</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>discriminator.add(Activation(LeakyReLU(<span class="fl">0.2</span>)))</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>discriminator.add(Dropout(<span class="fl">0.3</span>))</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>discriminator.add(Conv2D(<span class="dv">128</span>,kernel_size<span class="op">=</span><span class="dv">5</span>,strides<span class="op">=</span><span class="dv">2</span>,padding<span class="op">=</span><span class="st">'same'</span>))</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>discriminator.add(Activation(LeakyReLU(<span class="fl">0.2</span>)))</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>discriminator.add(Dropout(<span class="fl">0.3</span>))</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>discriminator.add(Flatten())</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>discriminator.add(Dense(<span class="dv">1</span>,activation<span class="op">=</span><span class="st">'sigmoid'</span>))</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>discriminator.<span class="bu">compile</span>(loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,optimizer<span class="op">=</span><span class="st">'adam'</span>)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>discriminator.trainable<span class="op">=</span><span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<blockquote class="blockquote">
-
-</blockquote>
-<p>[해석] - 간단히 64 개의 node 에서 128 개의 node 로 높였고 그 사이사이 알고있는 코드가 등장했습니다. - Flatten 으로 노드들을 폈고 Dense 1 로 fullyconnected 를 받았습니다. sigmoid 로 확률로 바꾸었고 - 판별자가 train 을 하지않고 결과를 계산한다고 했습니다.</p>
-
-
 </section>
 
 </main> <!-- /main -->
@@ -449,7 +500,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      return note.innerHTML;
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {

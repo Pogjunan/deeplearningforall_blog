@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.533">
+<meta name="generator" content="quarto-1.4.548">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="전준한">
 <meta name="dcterms.date" content="2023-12-23">
 
-<title>deeplearningforall_blog - [5]딥러닝 모델정리</title>
+<title>deeplearningforall_blog - [3]신경망의 이해</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -59,22 +59,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -103,8 +103,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="../styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -114,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">deeplearningforall_blog</span>
     </a>
   </div>
@@ -125,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -149,7 +178,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">[5]딥러닝 모델정리</h1>
+      <h1 class="title">[3]신경망의 이해</h1>
                       </div>
   </div>
     
@@ -185,27 +214,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<section id="cnn" class="level1">
-<h1><code>CNN</code></h1>
-<div id="eb6a25b0-a839-4e49-9d7c-c29ec04c1da2" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model.add((Conv2D(<span class="dv">32</span>, kernel_size<span class="op">=</span>(<span class="dv">3</span>,<span class="dv">3</span>), input_shape<span class="op">=</span>(<span class="dv">28</span>,<span class="dv">28</span>,<span class="dv">1</span>),activation<span class="op">=</span><span class="st">'relu'</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>          <span class="co">#input_shape = 행,열,색상</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>model.add((Conv2D(<span class="dv">64</span>,(<span class="dv">3</span>,<span class="dv">3</span>), activation<span class="op">=</span><span class="st">'relu'</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 필터개수를 32개로 받아서 64개로 실시.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="퍼셉트론" class="level1">
+<h1><code>-</code> 퍼셉트론</h1>
+<ul>
+<li>신경망의 기본단위</li>
+</ul>
+<p><code>-</code> In deeplearning - $ y = ax + <span class="math inline">\(&lt;span style="color:red; font-weight:bold;"&gt;\)</span>b$</p>
+<p>=&gt; <span class="math inline">\(y =\)</span> <span style="color:red;"><span class="math inline">\(w\)</span></span>x + <span style="color:red;"><span class="math inline">\(b\)</span></span></p>
+<p><br> 가중치 = <span class="math inline">\(w\)</span> <br> 바이어스 = <span class="math inline">\(bias\)</span> <br> 가중합 = <span class="math inline">\(wx\)</span> <br> 활성화함수 = <span class="math inline">\(a\)</span></p>
+<p># 다층 퍼셉트론의 설계</p>
+<p>$ n_1= (x_1w_{<em>{11}} + x_2w</em>{_{21}} + b_1) $</p>
+<ul>
+<li><span class="math inline">\(n_1\)</span> 은 하나의 은닉층내의퍼셉트론의 값입니다.</li>
+</ul>
+<p>$ n_2= (x_1w_{<em>{12}} + x_2w</em>{_{22}} + b_1) $</p>
+<p>$y_{out} =(n_1w_{<em>{31}} + x_2w</em>{_{32}} + b_3) $</p>
+<div id="97b4d1a3-3cbb-4c7f-a520-3b91513d03b1" class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># W(1) 은 2x2 행렬로 볼수있다.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="맥스풀링" class="level2">
-<h2 class="anchored" data-anchor-id="맥스풀링">맥스풀링</h2>
-<p><code>-</code> MaxPooling2d() <br> - model.add(MaxPooling2d(pool_size=2)) # 2x2 로 겹치지않게 나누어서 그중 가장 큰 숫자추출 - 전체크기가 절반으로 줄어듭니다.</p>
-</section>
-</section>
-<section id="정리---cnn" class="level1">
-<h1>정리 - CNN</h1>
-<section id="예시" class="level3">
-<h3 class="anchored" data-anchor-id="예시">[예시]</h3>
-<p>$ X_1 , …. X_n $ (784개 속성) <br> $ X_1= $ (28x28x1) <br> $ Y <em>{h1} convolution (32개 필터 , 3x3)$ =&gt; 26x26x32 <br> $ Y </em>{h2} convolution (64개 필터 , 3x3)$ =&gt; 24x24x64 <br> $ Y _{max-pooling} (Poolsize:2) $ =&gt; 12x12x64 <br> $ Y h1 $ =&gt; 512개 노드 # 12<em>12</em>64 = 9216 차원의 벡터가나왔고 512개의 노드로 고정시켰다는 의미입니다. <br> $ Y_0 $ =&gt; 10개 출력 + softmax =&gt; 10개 차원으로 축소 + softmax 로 확률을 정함 <br></p>
-<p>[과적합 피하기위한 노력]</p>
-<hr>
-<p><code>-</code> 드랍아웃 (dropout) - 역전파 순전파 게속하면 당연히 수렴을 통해 overfitting 이 예상됩니다. - 이에 드랍아웃으로 랜덤한 노드를 퍼센트로 꺼서 overfitting 을 방지합니다.</p>
+<p>W_1 = [[w_11 ,w_12] ,[w_21,w_22]] <br> W_2 = [[w_31],[w_32]] <br> b(1) = [[3],[1]] <br> b(2) = [-1]</p>
+<div id="c36bc398-800d-4bcf-83e6-0cca697f202c" class="cell" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 역전파는 생략 -&gt; 그냥 전미분으로 반대쪽으로 가면서 연쇄법칙으로 계산 용이</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="기울기-소실-문제" class="level2">
+<h2 class="anchored" data-anchor-id="기울기-소실-문제"><code>-</code> 기울기 소실 문제</h2>
+<p><br> #### 역전파가 전달될때마다 기울기의 값이 점점 작아져서 기울기 소실 발생(vanishing gradient)</p>
+<ul>
+<li>이유 : sigmoid 의 미분 값이 0.3이 max</li>
+<li>시그모이드, 하이퍼볼릭,렐루,소프트멕스가 이쓴데 렐룰를 쓰면 미분값이 1이되어 맨 처음층이 살아남을 수 있어서 사용됩니다.</li>
+</ul>
+<p><code>-</code> 다른 경사하강법문제 -확률적 경사 하강법 SGD , 모멘텀 , 네스테로프 모멘텀 , 아다그라드 , RMSProp, 아담 등은 다음에 다루겠습니다.</p>
 
 
 </section>
@@ -373,7 +411,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      return note.innerHTML;
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
     }
   }
   for (var i=0; i<xrefs.length; i++) {
